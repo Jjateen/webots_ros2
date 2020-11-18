@@ -1,0 +1,89 @@
+#VRML_SIM R2020b utf8
+WorldInfo {
+  info [
+    "Simulation for Video 6: Webots ros2 tutorial series on Soft-illusion youtube channel"
+    "Copyright (C) Soft-illusion"
+  ]
+  title "ROS2 simulation of the custom robot for line following"
+  coordinateSystem "NUE"
+}
+Viewpoint {
+  orientation 0.40065629407408393 -0.6125163746572112 -0.6813943240118808 3.8329900685139258
+  position 0.6551478779543726 1.5689955893488898 -0.578235175462422
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  floorSize 2 2
+  floorTileSize 2 2
+  floorAppearance PBRAppearance {
+    baseColorMap ImageTexture {
+      url [
+        "textures/loop_line.jpg"
+      ]
+    }
+    roughness 0.2
+    metalness 0
+  }
+  wallHeight 0.05
+}
+DEF OBSTACLE1 Solid {
+  translation 0.007158 0.095 0.207599
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 1 0.1 0.3
+        roughness 0.5
+        metalness 0
+      }
+      geometry DEF BOX1 Box {
+        size 0.05 0.2 0.05
+      }
+    }
+  ]
+  name "red box"
+  boundingObject USE BOX1
+}
+DEF OBSTACLE2 Solid {
+  translation -0.0203259 0.055 -0.482769
+  rotation 0 1 0 3.82203
+  scale 2 2 2
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 1 0.501961 1
+        roughness 0.5
+        metalness 0
+      }
+      geometry DEF BOX2 Box {
+        size 0.08 0.05 0.08
+      }
+    }
+  ]
+  name "pink box"
+  boundingObject USE BOX2
+}
+DEF OBSTACLE3 Solid {
+  translation 0.467554 0.085 0.206886
+  rotation 0 1 0 13.7261
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.501961 0.501961 0.501961
+        roughness 0.5
+        metalness 0
+      }
+      geometry DEF BOX3 Box {
+        size 0.2 0.2 0.05
+      }
+    }
+  ]
+  name "gray box"
+  boundingObject USE BOX3
+}
+RobotSense {
+  translation 0.650708 0.0398 -0.749952
+  rotation 0 1 0 -0.0066953071795863295
+}

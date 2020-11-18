@@ -22,10 +22,12 @@ data_files.append(('share/ament_index/resource_index/packages', [
     'resource/' + package_name
 ]))
 data_files.append(('share/' + package_name, [
-    'launch/line_following_launch.py'
+    'launch/line_following_launch.py',
+    'launch/slam_toolbox_launch.py'
 ]))
 data_files.append(('share/' + package_name + '/worlds', [
-    'worlds/custom_line_follower.wbt'
+    'worlds/custom_line_follower.wbt',
+    'worlds/slam_toolbox.wbt'
 ]))
 data_files.append(('share/' + package_name + '/protos', [
     'protos/RobotSense.proto'
@@ -44,7 +46,7 @@ data_files.append(('share/' + package_name, [
 
 setup(
     name=package_name,
-    version='1.0.2',
+    version='1.0.3',
     packages=[package_name],
     data_files=data_files,
     install_requires=['setuptools', 'launch'],
@@ -59,7 +61,9 @@ setup(
     entry_points={
         'console_scripts': [
             'enable_robot = webots_ros2_tutorials.slave:main',
-            'line_follower = webots_ros2_tutorials.master:main'
+            'line_follower = webots_ros2_tutorials.master:main',
+            'odom_publisher = webots_ros2_tutorials.odom_publisher:main'
+
         ],
         'launch.frontend.launch_extension': ['launch_ros = launch_ros']
     }

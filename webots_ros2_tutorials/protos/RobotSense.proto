@@ -16,6 +16,32 @@ PROTO RobotSense [
       rotation IS rotation
       controller IS controller
       children [
+
+        Lidar {
+          translation 0 0.05 0
+          children [
+            Solid {
+              translation 0 -0.02 0
+              children [
+                Shape {
+                  appearance PBRAppearance {
+                    baseColor 0 0 1
+                  }
+                  geometry Cylinder {
+                    height 0.06
+                    radius 0.02
+                  }
+                }
+              ]
+            }
+          ]
+          name "lidar_sensor"
+          horizontalResolution 180
+          fieldOfView 6.28
+          numberOfLayers 1
+          minRange 0.12
+          maxRange 2
+        }
         DistanceSensor {
           type "infra-red"
           translation -0.03 -0.02 0.1
