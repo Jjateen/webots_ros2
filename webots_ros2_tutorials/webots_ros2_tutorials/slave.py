@@ -225,7 +225,7 @@ class ServiceNodeVelocity(WebotsNode):
         msg_lidar.angle_max = 2 * 22 / 7
         msg_lidar.angle_increment = ( 2 * 22 ) / (180 * 7 )
         msg_lidar.range_min = 0.12
-        msg_lidar.range_max = 0.5
+        msg_lidar.range_max = 2.0
         msg_lidar.scan_time = 0.032
         msg_lidar.ranges = self.lidar_sensor.getRangeImage()
 

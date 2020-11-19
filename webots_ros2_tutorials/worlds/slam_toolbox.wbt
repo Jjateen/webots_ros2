@@ -27,7 +27,7 @@ RectangleArena {
     roughness 0.2
     metalness 0
   }
-  wallHeight 0.05
+  wallHeight 0.15
 }
 DEF OBSTACLE1 Solid {
   translation 0.007158 0.095 0.207599
