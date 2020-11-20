@@ -80,8 +80,8 @@ class Odometry_pub(Node):
         odom_transform.header.stamp = self.get_clock().now().to_msg()
 
         # odom_transform.header.stamp = Time(seconds=self.getTime().now()).to_msg()
-        odom_transform.header.frame_id = 'base_link'
-        odom_transform.child_frame_id = 'odom'
+        odom_transform.header.frame_id = 'odom'
+        odom_transform.child_frame_id = 'base_link'
         odom_transform.transform.rotation.x = odom_quat[0]
         odom_transform.transform.rotation.y = odom_quat[1]
         odom_transform.transform.rotation.z = odom_quat[2]

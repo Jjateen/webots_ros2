@@ -36,7 +36,7 @@ PROTO RobotSense [
             }
           ]
           name "lidar_sensor"
-          horizontalResolution 180
+          horizontalResolution 181
           fieldOfView 6.28
           numberOfLayers 1
           minRange 0.12
@@ -120,6 +120,9 @@ PROTO RobotSense [
             RotationalMotor {
               name "left_front_wheel"
             }
+            PositionSensor {
+              name "left_front_position"
+            }
           ]
           endPoint Solid {
             translation 0.06 0 0.05
@@ -151,6 +154,9 @@ PROTO RobotSense [
             RotationalMotor {
               name "right_front_wheel"
             }
+            PositionSensor {
+              name "right_front_position"
+            }
           ]
           endPoint Solid {
             translation -0.06 0 0.05
@@ -172,6 +178,9 @@ PROTO RobotSense [
             RotationalMotor {
               name "left_rear_wheel"
             }
+            PositionSensor {
+              name "left_rear_position"
+            }
           ]
           endPoint Solid {
             translation 0.06 0 -0.05
@@ -192,6 +201,9 @@ PROTO RobotSense [
           device [
             RotationalMotor {
               name "right_rear_wheel"
+            }
+            PositionSensor {
+              name "right_rear_position"
             }
           ]
           endPoint Solid {

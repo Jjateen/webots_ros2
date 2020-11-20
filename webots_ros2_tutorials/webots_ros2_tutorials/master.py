@@ -32,7 +32,7 @@ class LineFollower(Node):
         self.pubs_cmdvel = self.create_publisher(Twist, 'cmd_vel', 1)
 
         # vehicle parameters
-        self.speed = 0.01
+        self.speed = 0.1
         self.angle_correction = 0.01
 
         # Initialize parameters
