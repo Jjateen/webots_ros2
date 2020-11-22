@@ -14,7 +14,7 @@
 
 import rclpy
 from webots_ros2_core.webots_node import WebotsNode
-from math import cos, sin
+from math import cos, sin , tan , pi
 from std_msgs.msg import Float64
 from rclpy.time import Time
 from geometry_msgs.msg import Twist
@@ -39,8 +39,7 @@ class ServiceNodeVelocity(WebotsNode):
         self.sensor_timer = self.create_timer(
             0.001 * self.service_node_vel_timestep, self.sensor_callback)
 
-        self.right_sensor = self.robot.getDistanceSensor(
-            'distance_sensor_right')
+        self.right_sensor = self.robot.getDistanceSensor('distance_sensor_right')
         self.right_sensor.enable(self.service_node_vel_timestep)
         self.sensor_publisher_right = self.create_publisher(Float64, 'right_IR', 1)
 
@@ -89,9 +88,6 @@ class ServiceNodeVelocity(WebotsNode):
         self.lidar_sensor.enable(self.service_node_vel_timestep)
         self.laser_publisher = self.create_publisher(LaserScan, '/scan', 1)
 
-        # self.publish_tf()
-
-        # self.publish_odom()
         ##########################
         self.x = 0.0
         self.y = 0.0
@@ -106,24 +102,24 @@ class ServiceNodeVelocity(WebotsNode):
         self.odom_timer = self.create_timer(self.time_step, self.odom_callback)
         #########################
         self.get_logger().info('Sensor enabled')
-        self.prev_angle = 0
-        self.prev_left_wheel_ticks = 0
-        self.prev_right_wheel_ticks = 0
-        self.last_time = self.robot.getTime()
+        self.prev_angle = 0.0
+        self.prev_left_wheel_ticks = 0.0
+        self.prev_right_wheel_ticks = 0.0
+        self.last_time = 0.0
         self.wheel_gap = 0.12  # in meter
         self.wheel_radius = 0.04  # in meter
-        self.front_back = 0.1
+        self.front_back = 0.1 # in meter
 
     ####################################
     def odom_callback(self):
         self.publish_odom()
-        # print("Odom call back")
 
     def publish_odom(self):
         stamp = Time(seconds=self.robot.getTime()).to_msg()
 
         self.odom_broadcaster = TransformBroadcaster(self)
         time_diff_s = self.robot.getTime() - self.last_time
+        # time_diff_s = self.time_step
 
         left_wheel_ticks = self.left_wheel_sensor.getValue()
         right_wheel_ticks = self.right_wheel_sensor.getValue()
@@ -137,30 +133,47 @@ class ServiceNodeVelocity(WebotsNode):
         v_left = v_left_rad * self.wheel_radius
         v_right = v_right_rad * self.wheel_radius
         v = (v_left + v_right) / 2
-        omega = (v_right - v_left) / self.wheel_gap
-
-        # Calculate position & angle
-        # Fourth order Runge - Kutta
-        # Reference: https://www.cs.cmu.edu/~16311/s07/labs/NXTLabs/Lab%203.html
-        k00 = v * cos(self.prev_angle)
-        k01 = v * sin(self.prev_angle)
-        k02 = omega
-        k10 = v * cos(self.prev_angle + time_diff_s * k02 / 2)
-        k11 = v * sin(self.prev_angle + time_diff_s * k02 / 2)
-        k12 = omega
-        k20 = v * cos(self.prev_angle + time_diff_s * k12 / 2)
-        k21 = v * sin(self.prev_angle + time_diff_s * k12 / 2)
-        k22 = omega
-        k30 = v * cos(self.prev_angle + time_diff_s * k22 / 2)
-        k31 = v * sin(self.prev_angle + time_diff_s * k22 / 2)
-        k32 = omega
+        omega = (v_right - v_left) / 2 * 2 * self.wheel_gap # (Vright - Vleft) / 2* wheel_gap
 
 
-        self.x += (time_diff_s / 6) * (k00 + 2 * (k10 + k20) + k30)
-        self.y += (time_diff_s / 6) * (k01 + 2 * (k11 + k21) + k31)
-        self.th = self.th + \
-            (time_diff_s / 6) * (k02 + 2 * (k12 + k22) + k32)
+        # ################################################################
+        # angle_v = self.th+omega
+        # vx=v*cos(omega)
+        # vy=v*sin(omega)
+        # # self.get_logger().info('th = %f , v = %f , omega = %f' % (self.th ,v , omega) )
+        # dx = (cos(angle_v)*vx - sin(angle_v)*vy)*time_diff_s
+        # dy = (sin(angle_v)*vx + cos(angle_v)*vy)*time_diff_s
+        # dth = tan(omega)*vx*time_diff_s / self.front_back
 
+        # self.x += dx
+        # self.y += dy
+        # self.th += omega
+
+
+        # # Calculate position & angle
+        # # Fourth order Runge - Kutta
+        # # Reference: https://www.cs.cmu.edu/~16311/s07/labs/NXTLabs/Lab%203.html
+        # k00 = v * cos(self.prev_angle)
+        # k01 = v * sin(self.prev_angle)
+        # k02 = omega
+        # k10 = v * cos(self.prev_angle + time_diff_s * k02 / 2)
+        # k11 = v * sin(self.prev_angle + time_diff_s * k02 / 2)
+        # k12 = omega
+        # k20 = v * cos(self.prev_angle + time_diff_s * k12 / 2)
+        # k21 = v * sin(self.prev_angle + time_diff_s * k12 / 2)
+        # k22 = omega
+        # k30 = v * cos(self.prev_angle + time_diff_s * k22 / 2)
+        # k31 = v * sin(self.prev_angle + time_diff_s * k22 / 2)
+        # k32 = omega
+
+
+        self.x += v * cos(self.prev_angle)*time_diff_s
+        self.y += v * sin(self.prev_angle)*time_diff_s
+        self.th += omega
+
+
+
+        ################################################################
 
         # Reset section
         self.prev_angle = self.th
@@ -245,7 +258,7 @@ class ServiceNodeVelocity(WebotsNode):
         msg_lidar.header.stamp = stamp
         msg_lidar.angle_min = 0.0
         msg_lidar.angle_max = 2 * 22 / 7
-        msg_lidar.angle_increment = ( 2 * 22 ) / (180 * 7 )
+        msg_lidar.angle_increment = ( 0.25 * 22 ) / (180 * 7 )
         msg_lidar.range_min = 0.12
         msg_lidar.range_max = 2.0
         msg_lidar.scan_time = 0.032

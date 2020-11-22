@@ -44,11 +44,11 @@ def generate_launch_description():
         name='master_node'
     )
 
-    odom = Node(
-        package='webots_ros2_tutorials',
-        executable='odom_publisher',
-        name='odom_publisher'
-    )
+    # odom = Node(
+    #     package='webots_ros2_tutorials',
+    #     executable='odom_publisher',
+    #     name='odom_publisher'
+    # )
 
     return LaunchDescription([
         webots,

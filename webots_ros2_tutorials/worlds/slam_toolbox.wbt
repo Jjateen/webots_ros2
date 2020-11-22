@@ -8,8 +8,8 @@ WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation 0.40065629407408393 -0.6125163746572112 -0.6813943240118808 3.8329900685139258
-  position 0.6551478779543726 1.5689955893488898 -0.578235175462422
+  orientation -0.01580150525249006 -0.849122824739971 -0.5279590333893037 3.204228395149676
+  position 0.4117050886245583 4.04616747412707 -1.8981717856951923
 }
 TexturedBackground {
 }
@@ -21,7 +21,7 @@ RectangleArena {
   floorAppearance PBRAppearance {
     baseColorMap ImageTexture {
       url [
-        "textures/loop_line.jpg"
+        "textures/loop_3.jpg"
       ]
     }
     roughness 0.2
@@ -84,6 +84,6 @@ DEF OBSTACLE3 Solid {
   boundingObject USE BOX3
 }
 RobotSense {
-  translation 0.650708 0.0398 -0.749952
+  translation 0.848694 0.0398 -0.448618
   rotation 0 1 0 -0.0066953071795863295
 }
