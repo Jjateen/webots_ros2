@@ -91,14 +91,12 @@ To open your ROS2 workspace:
 cd ~/ros2_ws
 colcon build
 ```
-
 ### Run an Example  
 ```bash
 source ~/ros2_ws/install/setup.bash
 ros2 launch webots_ros2_tiago tiago.launch.py
 ```
-visit [tutorial.md](./tutorial.md) for example of ros2 lab-1
----
+Visit [tutorial.md](./tutorial.md) for an example of the ROS 2 Lab 1.
 
 ## Troubleshooting Errors  
 
